@@ -1,10 +1,16 @@
 import { getTopic } from "@/actions/topicActions"
+import { auth } from "@/auth"
 import EditTopicForm from "@/components/EditTopicForm"
+import { redirect } from "next/navigation"
 
 
 export default async function EditTopic({params,}: {params: { id: string}
 }) {
   const { topic } = await getTopic(params.id)
+  const session = await auth()
+  if(!session) {
+    redirect('/login')
+  }
 
   return (
     <div className="max-w-3xl mx-auto mt-8">
@@ -13,6 +19,7 @@ export default async function EditTopic({params,}: {params: { id: string}
        id={topic._id}
        title={topic.title}
        description={topic.description}
+       
        />
     </div>
   )

@@ -1,10 +1,16 @@
 'use client'
 
 import { createTopic } from "@/actions/topicActions"
-import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { redirect, useRouter } from "next/navigation";
 import { useState } from "react"
 
 export default function AddTopicForm() {
+    const { data: session } = useSession()
+    if(!session) {
+      redirect('/login')
+    }
+
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const router = useRouter()
